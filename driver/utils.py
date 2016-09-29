@@ -160,14 +160,14 @@ class ArgumentListFilter(object):
             '-pg' : (0, ArgumentListFilter.compileUnaryCallback),
 
             # Optimization
-            '-O' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-O0' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-O1' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-O2' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-O3' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-Os' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-Ofast' : (0, ArgumentListFilter.compileUnaryCallback),
-            '-Og' : (0, ArgumentListFilter.compileUnaryCallback),
+            '-O' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-O0' : (0, ArgumentListFilter.catchUnaryCallback),
+            '-O1' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-O2' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-O3' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-Os' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-Ofast' : (0, ArgumentListFilter.ignoreUnaryCallback),
+            '-Og' : (0, ArgumentListFilter.ignoreUnaryCallback),
             # Component-specifiers
             '-Xclang' : (1, ArgumentListFilter.compileBinaryCallback),
             '-Xpreprocessor' : (1, ArgumentListFilter.defaultBinaryCallback),
@@ -351,6 +351,14 @@ class ArgumentListFilter(object):
         self.linkArgs.append(flag)
 
     def compileUnaryCallback(self, flag):
+        self.compileArgs.append(flag)
+
+    def ignoreUnaryCallback(self, flag):
+        _logger.warning('Ignore flag "{0}"'.format(flag))
+        #self.compileArgs.append(flag)
+
+    def catchUnaryCallback(self, flag):
+        _logger.warning('Catch flag "{0}"'.format(flag))
         self.compileArgs.append(flag)
 
     def darwinWarningLinkUnaryCallback(self, flag):
