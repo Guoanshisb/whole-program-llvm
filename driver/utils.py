@@ -731,6 +731,7 @@ def buildBitcodeFile(builder, srcFile, bcFile):
     bcc.extend(af.compileArgs)
     bcc.extend(['-c', srcFile])
     bcc.extend(['-o', bcFile])
+    bcc.append('-O0')
     _logger.debug('buildBitcodeFile: {0}\n'.format(bcc))
     proc = Popen(bcc)
     rc = proc.wait()
